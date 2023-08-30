@@ -1,0 +1,229 @@
+{% extends 'basic.html' %}
+{% block head %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+  integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+{%  endblock %}
+{% block css %}
+
+<style>
+  body {
+
+    background-color: rgb(250, 246, 246);
+
+
+  }
+
+  #container {
+    border: 7px solid white !important;
+    border-radius: 15px;
+    margin: 50px;
+    background-color: #1c2237;
+  }
+
+  .btn {
+    margin-left: 35%;
+    align-items: center;
+  }
+
+
+  .btns {
+    font-size: 25px;
+    width: 7%;
+    height: 75%;
+    border-radius: 9px;
+    margin-left: 2%;
+  }
+
+
+  .btnsp {
+    font-size: 22px;
+    width: 13%;
+    height: 75%;
+    border-radius: 10px;
+    margin-left: 2%;
+  }
+
+  h4,
+  p {
+    color: aliceblue;
+    margin-left: 5%;
+    font-size: 19px;
+  }
+
+  .vd {
+    background-color: rgb(255, 255, 255);
+    width: 94%;
+    margin: 3%;
+    /* margin-top: 5%; */
+  }
+
+  .rd {
+    background: url("https://store-images.s-microsoft.com/image/apps.39276.13751394576402710.96cc685f-8b49-4be9-9fa4-cdd32167e5bf.f11f0272-9484-403d-bd5c-cc134e53f99f?mode=scale&q=90&h=720&w=1280");
+    /* background-color:rgb(253, 253, 253); */
+    width: 94%;
+    margin: 3%;
+    /* margin-top: 5%; */
+  }
+</style>
+
+
+{% endblock css%}
+
+{% block body %}
+
+<div id="container">
+  <video src="" id="gum" class="vd" playsinline autoplay muted></video>
+  <video id="recorded" playsinline loop class="rd"></video>
+  <div class="btn">
+    <button id="start" class="btns"><i class="fas fa-camera"></i></button>
+    <button id="record" disabled class="btnsp">Record</button>
+    <button id="play" disabled class="btns"><i class="fas fa-play"></i></button>
+    <button id="download" disabled class="btns"><i class="fas fa-download"></i></button>
+  </div>
+  <div>
+    <h4>Media Stream Constraints options</h4>
+    <p>
+      Echo cancellation: <input type="checkbox" id="echoCancellation" style="transform: scale(2);" />
+    </p>
+  </div>
+
+  <div>
+    <span id="errorMsg"></span>
+  </div>
+</div>
+
+
+{% endblock body%}
+
+
+{% block js %}
+<script>
+  let mediaRecorder;
+  let recordedBlobs;
+
+  const errorMsgElement = document.querySelector('span#errorMsg');
+  const recordedVideo = document.querySelector('video#recorded');
+  const recordButton = document.querySelector('button#record');
+  const playButton = document.querySelector('button#play');
+  const downloadButton = document.querySelector('button#download');
+
+
+  recordButton.addEventListener('click', () => {
+    if (recordButton.textContent === 'Record') {
+      startRecording();
+    } else {
+      stopRecording();
+      recordButton.textContent = 'Record';
+      playButton.disabled = false;
+      downloadButton.disabled = false;
+    }
+  });
+
+
+  playButton.addEventListener('click', () => {
+    const superBuffer = new Blob(recordedBlobs, {
+      type: 'video/webm'
+    });
+    recordedVideo.src = null;
+    recordedVideo.srcObject = null;
+    recordedVideo.src = window.URL.createObjectURL(superBuffer);
+    recordedVideo.controls = true;
+    recordedVideo.play();
+  });
+
+
+  downloadButton.addEventListener('click', () => {
+    const blob = new Blob(recordedBlobs, {
+      type: 'video/mp4'
+    });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'test.mp4';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
+  });
+
+  function handleDataAvailable(event) {
+    console.log('handleDataAvailable', event);
+    if (event.data && event.data.size > 0) {
+      recordedBlobs.push(event.data);
+    }
+  }
+
+  function startRecording() {
+    recordedBlobs = [];
+    let options = {
+      mimeType: 'video/webm;codecs=vp9,opus'
+    };
+    try {
+      mediaRecorder = new MediaRecorder(window.stream, options);
+    } catch (e) {
+      console.error('Exception while creating MediaRecorder:', e);
+      errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;
+      return;
+    }
+
+    console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
+    recordButton.textContent = 'Stop';
+    playButton.disabled = true;
+    downloadButton.disabled = true;
+    mediaRecorder.onstop = (event) => {
+      console.log('Recorder stopped: ', event);
+      console.log('Recorded Blobs: ', recordedBlobs);
+    };
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.start();
+    console.log('MediaRecorder started', mediaRecorder);
+  }
+
+  function stopRecording() {
+    mediaRecorder.stop();
+  }
+
+  function handleSuccess(stream) {
+    recordButton.disabled = false;
+    console.log('getUserMedia() got stream:', stream);
+    window.stream = stream;
+
+    const gumVideo = document.querySelector('video#gum');
+    gumVideo.srcObject = stream;
+  }
+
+  async function init(constraints) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      handleSuccess(stream);
+    } catch (e) {
+      console.error('navigator.getUserMedia error:', e);
+      errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+    }
+  }
+
+  document.querySelector('button#start').addEventListener('click', async () => {
+    const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
+    const constraints = {
+      audio: {
+        echoCancellation: {
+          exact: hasEchoCancellation
+        }
+      },
+      video: {
+        width: 1380,
+        height: 800
+      }
+    };
+    console.log('Using media constraints:', constraints);
+    await init(constraints);
+  });
+</script>
+{% endblock js %}

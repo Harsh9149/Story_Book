@@ -1,0 +1,249 @@
+{% extends 'basic.html' %}
+{% block css %}
+<style>
+	html,
+	body {
+		background-color: white;
+		color: #1c2237;
+		margin: 0;
+		width: 100%;
+	}
+
+	.card {
+		width: 16.5rem;
+		background-color: #1c2237;
+		border: none;
+		border-radius: 5px;
+		height: 27rem;
+		color: rgb(240, 232, 232);
+		font: sans-serif;
+		margin-left: 25px;
+		margin-top: 56px;
+		text-align: center;
+		box-shadow: 0px 0px 13px 0px rgba(28, 34, 55, 0.75);
+		-webkit-box-shadow: 0px 0px 13px 0px rgba(28, 34, 55, 0.75);
+		-moz-box-shadow: 0px 0px 13px 0px rgba(28, 34, 55, 0.75);
+		transition: all 0.4s ease-out;
+	}
+
+	.animation-btn {
+		color: #1c2237;
+		background-color: white;
+		transition: all 0.4s ease-out;
+	}
+
+	.animation-btn:hover {
+		color: white;
+		background-color: #1c2237;
+		cursor: pointer;
+		font-weight: 600;
+	}
+
+	.card:hover {
+		cursor: pointer;
+		transform: scale(1.05);
+
+	}
+
+	.card2 {
+		width: 15.5rem;
+		box-shadow: 0 6px 9px 0 rgba(0, 0, 0, 0.966), 0 6px 20px 0 rgba(0, 0, 0, 0.473);
+		border-radius: 4px;
+		height: max-content;
+		background-color: white;
+		color: #1c2237;
+		font: sans-serif;
+		margin-left: 20px;
+		text-align: center;
+		display: block;
+		flex-grow: 0;
+		flex-shrink: 1;
+		flex-basis: auto;
+		align-self: auto;
+		order: 0;
+		transition: all 0.4s ease-out;
+
+	}
+
+	.card2:hover {
+		transform: scale(1.05);
+		cursor: pointer;
+
+	}
+
+	.btn {
+		text-decoration: none;
+		font-size: 15px;
+		border-radius: 5px;
+		height: 2em;
+		margin-top: -100px;
+		color: rgb(255, 255, 255);
+		background-color: #1c2237;
+
+	}
+
+	.cd-title {
+		margin-top: 12px;
+		font-size: 23px;
+		color: #1c2237;
+	}
+
+	.btn-container {
+		margin-left: 1%;
+	}
+
+	.btn-container p {
+		padding: 10px;
+		display: block;
+		margin: 5% 0;
+		margin-top: 1px;
+		font-size: 24px;
+
+		width: 10%;
+		height: 75%;
+		text-align: center;
+		border-radius: 5px;
+		text-decoration: none;
+		transition: all 0.4s ease-out;
+		box-shadow: 0 6px 9px 0 rgba(0, 0, 0, 0.568), 0 6px 20px 0 rgba(0, 0, 0, 0.473);
+	}
+
+	.btn-container-sec {
+		background-color: #1c2237;
+		margin-top: -1px;
+		height: max-content;
+		padding-bottom: 1px;
+	}
+
+	.btn-container p a {
+		transition: all 0.4s ease-out;
+	}
+
+	.btn-container :hover a {
+		color: white;
+	}
+
+	.btn-container-sec p {
+		padding: 10px;
+		display: block;
+		margin: 5% 0;
+		margin-top: 1px;
+		font-size: 24px;
+		margin-left: 2%;
+		width: 10%;
+		height: 75%;
+		text-align: center;
+		border-radius: 5px;
+		text-decoration: none;
+		transition: all 0.4s ease-out;
+		border: 2px solid white;
+
+	}
+
+	.btn-container-sec p a {
+		transition: all 0.4s ease-out;
+		color: white;
+	}
+
+	.btn-container-sec p:hover {
+		background-color: white;
+		cursor: pointer;
+	}
+
+	.btn-container-sec p:hover a {
+		color: #1c2237;
+		font-weight: 600;
+	}
+
+	.cdb,
+	img {
+		border: none;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	.fir-part,
+	.sec-part {
+
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+	}
+
+	.fir-part {
+		margin: 5% 0;
+	}
+
+	.sec-part {
+		background-color: #1c2237;
+		color: white;
+		margin-top: 5%;
+		padding: 50px;
+	}
+
+	h1 {
+		text-align: center;
+		background-color: #1c2237;
+		color: white;
+		font-size: 50px;
+		padding: 30px;
+		margin-top: 0px;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+</style>
+{% endblock css %}
+{% block body %}
+<hr style="background-color:white;">
+<h1>Welcome to the World of Book</h1>
+
+<div class="row fir-part" style="display: flex;">
+	{% for i in allbooks %}
+	<div class="card">
+		<div class="cdb">
+			<a href="/all/read/{{i.id}}" style="text-decoration: none; color:white;"> <img src="/media/{{i.img}}"
+					width=100%></a>
+			<br>
+			<h5 class="cd-title">{{i.book_name}}</h5>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<div class="btn-container">
+	<p><a class="animation-btn" href="/all/upload">+ Create</a></p>
+</div>
+<div class="row sec-part" style="display: flex;">
+	{% for i in allaudios %}
+	<div class="card2">
+		<div class="cdb">
+			<a href="/all/audioplay/{{i.id}}" style="text-decoration: none; color:white;"> <img
+					src="https://4.imimg.com/data4/DO/JC/MY-1978309/music-wallpaper-500x500.jpg" width=100%
+					style="border-radius: 1%;"></a>
+			<h5 class="cd-title">{{i.story_name}}</h5>
+		</div>
+	</div>
+	{% endfor %}
+
+
+</div>
+<div class="btn-container-sec">
+	<p class="animation-btn-sec"><a href="/all/audio">+ Create</a></p>
+</div>
+
+<p id="demo"></p>
+
+{% endblock body %}
+
+{% block js%}
+<script>
+	document.getElementById("demo").innerHTML =
+		"cookiesEnabled is " + navigator.cookieEnabled;
+</script>
+{% endblock js %}

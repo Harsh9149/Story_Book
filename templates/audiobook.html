@@ -1,0 +1,93 @@
+{% extends 'basic.html' %}
+{% block css %}
+<style>
+	body {
+		background: white;
+	}
+
+	.container {
+		margin: 5%;
+		border-radius: 9px;
+		background-color: #1c2237;
+	}
+
+
+	.main {
+		margin-left: 3%;
+		font-size: 25px;
+	}
+
+	.third {
+		margin-left: 82%;
+		border-color: #3498db;
+		color: #1c2237;
+		background: white;
+		font-size: 20px;
+		width: 15%;
+		box-shadow: 0 0 40px 40px white inset, 0 0 0 0 white;
+		-webkit-transition: all 150ms ease-in-out;
+		transition: all 150ms ease-in-out;
+	}
+
+	.third:hover {
+		box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+		color: #1c2237;
+		background: white;
+
+	}
+</style>
+
+
+{% endblock css %}
+{% block body %}
+
+<div class="container">
+	<div class="main">
+		<h1 style="color:rgb(255, 253, 254); text-align: center; font-family: Arial, Helvetica, sans-serif;">Create Your
+			Audio Book</h1>
+		<br>
+		<br>
+		{% for message in messages %} {% if "Exists" in message %}
+		<h6 class="text-danger">{{ message }}</h6>
+		{% else %}
+		<h6 class="text-white">{{ message }}</h6>
+		{% endif %}
+		{% endfor %}
+		{% if user.is_authenticated %}
+		<main class="SCxLW" role="main">
+			<div class="up">
+				<form method="POST" action="/all/audio/" enctype="multipart/form-data">
+					{% csrf_token %}
+					<label style="color:white; margin-left: 5%;">Story_Name</label>
+					<input type="text" placeholder="Story_Name" name="story_name"
+						style="font-size: 20px; margin-left: 20%; border-radius:5px;">
+					<br><br>
+					<label style="color:white; margin-left: 5%;">Audio_Book</label>
+					<input accept="mp3,mkv" type="file" placeholder="Story_Audio" name="story_audio"
+						style="font-size: 20px; margin-left: 20%; color:white; border-radius:5px;" />
+					<br>
+
+					<p style="color:white; margin-left:5%"> Do You want to create then <a href="/all/record"
+							style="text-decoration: underline ">Create</a></p>
+
+					<button class="btn third" type="submit">Post</button>
+					<br>
+
+					<br><br><br><br><br><br>
+
+
+
+				</form>
+
+			</div>
+
+			{% else %}
+
+			<h2><a href="/login"></a></h2>
+
+			{% endif %}
+	</div>
+	<br />
+	<br />
+	<br />
+	{% endblock body %}

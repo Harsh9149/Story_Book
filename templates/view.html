@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>view</title>
+        <link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+ <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+</head>
+<style>
+   body{
+  
+background:  #f0ecbf ;
+ }
+
+   h1{
+      text-align: center;
+      font-size: 90px;
+      font-family:'Bonheur Royale', cursive;
+      font-weight: 900;
+      color: rgb(0, 0, 0);
+
+   }
+
+    p{
+    font-size:20px;
+    color: rgb(8, 0, 0);
+    margin-left: 10%;
+    margin-right: 10%;
+    }
+</style>
+<body>
+<br>
+<br>
+<h1>{{vi.book_name}}</h1>
+<br>
+<hr style="margin-left:5%; margin-right:5%; color: green; background-color: rgb(0, 0, 0); font-size: 30px;">
+<br>
+<p>{{vi.book_desc | safe}}</p>
+<br>
+<hr style="margin-left:5%; margin-right:5%; color: green; background-color: rgb(0, 0, 0); font-size: 30px;">
+<br>
+
+<br>
+<br>
+<div class="container my-3">
+
+<hr style="background:white">
+    <div class="container" style="background: rgba(255, 255,255, 0.5); border-radius:1%; ">
+    <h2 style="color: rgb(4, 4, 56);font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ">Give Your Review</h2>
+      {% if user.is_authenticated %}
+
+    {% for comment in comments %}
+    <div class="row my-3">
+        <div class="col-md-1  ">
+        <img class="rounded mx-auto d-block w-100 p-2" src="https://burlingtonfurniture.us/wp-content/uploads/2021/07/blank-profile-picture-973460_1280.png"  style="border-radius:50%" alt="user">
+        </div>
+        <div class="col-md-11 ">
+        <i><b style="font-size:24px;"> {{comment.user}} </b> </i>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            at {{comment.timestamp}}
+        <div>  {{comment.comment}}  </div>
+    </div>
+    </div>
+    {% endfor %}
+
+    <form action="/all/postComment/" method="post">
+        {% csrf_token %}
+      <input type="text" name="comment" class="form-control" placeholder="Commenting publicly as {{user}}">
+      <input type="hidden" name="postSno" value="{{vi.id}}" >
+      <br>
+    </form>
+        <br>
+{% else %}
+<h6>Login Please or Create Your Account</h6>
+{% endif %}
+
+
+</body>
+</html>

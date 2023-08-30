@@ -1,0 +1,237 @@
+{% extends 'basic.html' %}
+{% block css %}
+<style>
+    #pause {
+        display: none;
+    }
+
+    #unmute {
+        display: none;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        font-size: 14px;
+        font-family: 'Roboto', sans-serif;
+        --bg: #EBEBEB;
+        --black: #fae8e8;
+        --prog: #A4B7BE;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--black);
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .player {
+
+        width: 1000px;
+        height: 700px;
+        margin: 2rem auto;
+        padding: 3rem 1.25rem;
+        background: #1c2237;      
+        box-shadow: 0px 0px 13px 0px rgba(28, 34, 55, 0.75);
+        border-radius: 15px;
+        border: 1px solid rgb(223, 223, 223);
+        position: relative;
+    }
+
+    .info {
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    .info h1 {
+        color: var(--black);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .info p {
+        font-size: 1.15rem;
+        color: var(--prog);
+    }
+
+    .prog {
+        padding: 10px 0;
+    }
+
+    .prog-time {
+        padding: 3px 5px;
+        color: var(--prog);
+        font-weight: bold;
+        margin-left: 5%;
+        /* margin-top: 10%; */
+        margin-right: 5%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .prog-time>p {
+        font-size: 0.65rem;
+    }
+
+    .prog-bar {
+        width: 90%;
+        margin-left: 5%;
+        /* margin-top: 10%; */
+        margin-right: 5%;
+        height: 10px;
+        padding: 1px;
+        border-radius: 25px;
+        background: linear-gradient(145deg, #fbfbfb, #d4d4d4);
+        box-shadow: 5px 5px 10px #a5a5a5,
+            -5px -5px 10px #ffffff;
+    }
+
+    .prog-bar-inner {
+        height: 8px;
+        background: var(--prog);
+        border-radius: 25px;
+        width: 0;
+    }
+
+    .buttons {
+        margin: 2rem 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button {
+        color: var(--prog);
+        border-radius: 50%;
+        margin: 0 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px #d4d4d4,
+            -5px -5px 10px #ffffff;
+    }
+
+    .button-sm {
+        width: 2rem;
+        height: 2rem;
+        opacity: 0.75;
+    }
+
+    .button-md {
+        width: 2.5rem;
+        height: 2.5rem;
+        opacity: 0.85;
+    }
+
+    .button-lg {
+        width: 3.25rem;
+        height: 3.25rem;
+        box-shadow: inset 6px 6px 12px #c8c8c8,
+            inset -6px -6px 12px #ffffff
+    }
+
+    .credit {
+        background: linear-gradient(45deg, #3297D3, #8FEFFB);
+        color: var(--black);
+        padding: 1rem 0;
+        text-align: center;
+    }
+</style>
+{% endblock css%}
+
+
+{% block body %}
+
+
+<main class="player">
+    <div class="info">
+        <h1>{{ai.story_name}} </h1>
+        <p>{{user}}</p>
+    </div>
+    <br><br>
+    <img src="https://static.voices.com/wp-content/uploads/History-of-Audiobooks.jpg"
+        style="border-radius: 20px; width: 45%; margin-left: 27%;">
+    <audio id="myMusic">
+        <source src="/media/{{ai.story_audio }}" type="audio/mpeg">
+    </audio>
+    <br><br><br><br>
+    <div class="prog">
+        <div class="prog-time">
+            <p class="left">0:00</p>
+            <p class="right" id="rt">0.00</p>
+        </div>
+        <div class="prog-bar">
+            <div class="prog-bar-inner"></div>
+        </div>
+    </div>
+    <ul class="buttons">
+        <a href="#" class="button button-sm">
+            <span class="material-icons" id='mute' onclick="muteM()">volume_off</span>
+            <span class="material-icons" id='unmute' onclick="unmuteM()">volume_up</span>
+        </a>
+        <a href="#" class="button button-md">
+            <i class="fas fa-step-backward" aria-hidden="true"></i>
+            <span class="sr-only">Previous Music</span>
+        </a>
+        <a href="#" class="button button-lg">
+            <span class="material-icons" id='pause' onclick="pauseM()">pause</span>
+            <span class="material-icons" id='play' onclick="playM()">play_arrow</span>
+        </a>
+        <a href="#" class="button button-md">
+            <i class="fas fa-step-forward"></i>
+            <span class="sr-only">Next Music</span>
+        </a>
+        <a href="#" class="button button-sm">
+            <i class="fas fa-circle-notch fa-sm" aria-hidden="true"></i>
+            <span class="sr-only">Repeat Song</span>
+        </a>
+    </ul>
+
+</main>
+{% endblock body %}
+
+{% block js %}
+<script>
+    const player = document.getElementById('myMusic');
+    player.addEventListener('timeupdate', function () {
+        var currentTime = player.currentTime;
+        var duration = player.duration;
+        document.querySelector('.left').innerHTML = (parseInt(currentTime) / 100).toPrecision(1);
+        $('.prog-bar-inner').stop(true, true).animate({
+            'width': (currentTime + .25) / duration * 100 + '%'
+        }, 250, 'linear');
+        if (parseInt(currentTime) >= parseInt(duration)) pauseM();
+    })
+    const playM = () => {
+        document.getElementById('play').style.display = 'none';
+        document.getElementById('pause').style.display = 'block';
+        document.getElementById('rt').innerHTML = parseInt(player.duration) / 100;
+        document.getElementById('myMusic').play();
+    }
+    const pauseM = () => {
+        document.getElementById('play').style.display = 'block';
+        document.getElementById('pause').style.display = 'none';
+        document.getElementById('rt').innerHTML = parseInt(player.duration) / 100;
+        document.getElementById('myMusic').pause();
+    }
+    const muteM = () => {
+        document.getElementById('mute').style.display = 'none';
+        document.getElementById('unmute').style.display = 'block';
+        document.getElementById('myMusic').muted = true;
+    }
+    const unmuteM = () => {
+        document.getElementById('mute').style.display = 'block';
+        document.getElementById('unmute').style.display = 'none';
+        document.getElementById('myMusic').muted = false;
+    }
+</script>
+
+{% endblock js %}

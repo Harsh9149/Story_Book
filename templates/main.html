@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&family=Poppins:wght@100&display=swap"
+		rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+		integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+</head>
+
+<style>
+	body {
+		/* background-color: #1c2237; */
+		background: url("{% static 'velvet.png' %}");
+		/* backdrop-filter: blur(2px); */
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+
+	.submit-button::before {
+		background: linear-gradient(0deg, #ff7200 40%, #ffffff 80%);
+		display: block;
+		position: absolute;
+		padding-right: 110%;
+		padding-bottom: 100%;
+		/* 1:1 Aspect Ratio */
+		/* height: 100%; */
+		content: '';
+		z-index: -1;
+		transition: all .4s;
+	}
+
+	.submit-button,
+	.submit-button:hover {
+		text-decoration: none;
+		align-self: center;
+		width: 100%;
+		height: fit-content;
+		display: flex;
+		justify-content: center;
+		color: white;
+		border-radius: 4px;
+		border: 0px;
+		padding-block: 0.675rem;
+		padding-inline: 0.76rem;
+		align-items: center;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.15);
+		font-size: 30px;
+		z-index: 3;
+		cursor: pointer;
+	}
+
+	.submit-button:hover {
+		box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
+	}
+
+	.submit-button:hover::before {
+		box-shadow: 2px 2px 4px 0px rgba(255, 0, 0, 0.15);
+		transform: translateY(-40px);
+	}
+
+	.submit-button:active::before {
+		box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.15);
+		transform: translateY(-80px);
+	}
+
+
+	input[type=text],
+	input[type=password],
+	textarea,
+	select {
+		width: 100%;
+		height: 45px;
+		padding: 6px 10px;
+		border-radius: 3px;
+		border: none;
+		margin: 8px 0;
+		box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.15);
+		box-sizing: border-box;
+		transition: all 0.4s ease;
+
+	}
+
+	input[type=text]:focus,
+	input[type=password]:focus,
+	textarea:focus {
+		outline: none;
+		box-shadow: 0px 0px 4px 2px #ff730091;
+	}
+
+	.mcontent {
+		display: inline-block;
+		padding: 20px;
+		width: auto;
+	}
+
+	.login-form {
+		display: inline-block;
+		background-color: rgba(112, 112, 112, 0.2);
+		box-shadow: inset -1px 0px 15px 0 rgb(124 124 124 / 37%), 0px 0px 11px 0 rgb(0 5 46);
+		backdrop-filter: blur(4px);
+		border-radius: 10px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		align-items: center;
+		padding: 20px;
+		color: white;
+		font-size: 25px;
+		border-radius: 15px;
+		width: 450px;
+		height: fit-content;
+		transition: all 0.4s
+	}
+
+	.login-form:hover {
+		box-shadow: inset -1px 0px 7px 0 rgb(124 124 124 / 37%), 0px 0px 5px 0 rgb(0 5 46);
+	}
+
+	.form-control {
+		border: 1px solid;
+		border-radius: 5px;
+		font-size: 20px;
+		width: 270px;
+		margin-right: 1px;
+		;
+		height: 29px;
+		;
+	}
+
+	.bts {
+		font-size: 25px;
+		border-radius: 18px;
+		background: linear-gradient(rgb(255, 145, 0), red, rgb(235, 76, 2)) !important;
+		color: white;
+		width: 435px;
+		height: 45px;
+	}
+
+	.btsp {
+		font-size: 25px;
+		border-radius: 6px;
+		background-color: white;
+		color: #212034;
+		display: block;
+		font-weight: 600;
+		width: fit-content;
+		height: fit-content;
+		padding-block: 0.675rem;
+		padding-inline: 0.76rem;
+	}
+
+	.btsp:hover {
+		transition: all 0.4s ease-out;
+		box-shadow: 0 6px 9px 0 rgba(0, 0, 0, 0.568), 0 0px 20px 0 rgb(53, 53, 53);
+	}
+
+	.navbar {
+		color: white;
+		display: inline-block;
+		font-family: 'Lato', sans-serif;
+		/* font-family: 'Poppins', sans-serif; */
+		font-weight: 900;
+		overflow: hidden;
+	}
+
+	.nav {
+		display: flex;
+
+	}
+
+	.nav li {
+		list-style-type: none;
+		margin: 0 2vw;
+		font-size: 1.2vw;
+	}
+
+	.nav a {
+		text-decoration: none;
+		color: white;
+		transition: 0.4s ease-in-out;
+		text-transform: uppercase;
+
+	}
+
+	ul li a:hover {
+		color: #ff7200;
+		font-weight: 1900;
+	}
+
+	.navbar .icon {
+		display: none;
+	}
+
+	.p1content {
+		color: white;
+		display: flex;
+		width: 600px;
+		text-justify: inter-character;
+		font-size: 25px;
+	}
+
+	.icon {
+		display: none;
+	}
+
+	.body-content {
+		margin: auto auto;
+		min-height: 100vh;
+		padding-inline: 40px;
+		justify-content: space-evenly;
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.text-white {
+		color: white;
+	}
+
+	.text-black {
+		color: black;
+	}
+
+	.hcontent {
+		color: #ece9e6;
+		font-size: 60px;
+	}
+
+	.v-center {
+		display: flex;
+		align-items: center;
+	}
+
+	.navbar-brand {
+		color: #ff7200;
+		display: inline-block;
+		font-family: 'Bonheur Royale', 'cursive';
+		padding-inline: 40px;
+		font-weight: 900;
+		font-size: 60px;
+	}
+</style>
+
+<body>
+	<nav class="navbar" id="bar">
+		<ul class="nav">
+			<div class="navbar-brand">Storytellers</div>
+			<li class="v-center"><a href="/all/books/" class="links">Stories</a></li>
+			<li class="v-center"><a href="/all/upload/" class="links">Create Video</a></li>
+			<li class="v-center"><a href="/all/audio/" class="links">Create Audio</a></li>
+			<li class="v-center"><a href="#" class="links">Contact Us</a></li>
+		</ul>
+	</nav>
+
+
+	<div class="body-content">
+		<div class="mcontent">
+			<p class="text-white hcontent"> Welcome <br>
+				<span style="color: #ff7200"> to our community</span><br>
+				of storytellers</p>
+			<p class="p1content">Because reading increases your vocabulary and your knowledge of how to correctly use
+				new words, reading helps you clearly articulate what you want to say. The knowledge you gain from
+				reading also gives you lots to talk about with others.</p>
+
+			<a class="btsp" href="/all/books/">Join Us</a>
+		</div>
+		<div class="login-form">
+			{% if user.is_authenticated %}
+			<h1>Welcome {{user}}</h1>
+			<h4>We are thankful to you</h4>
+
+			{% else  %}
+
+			{% csrf_token %}
+			<form action="/login" method="POST" id='loged'>
+
+			{% csrf_token %}
+				<h1 style="text-align:center">Login</h1>
+				<hr>
+				<div class="form-float">
+					<label>Username : </label>
+					<input type="text" name="loginusername" class="form-control"><br>
+				</div><br>
+				<label>Password: </label>
+				<input type="password" name="loginpassword" class="form-control"><br>
+				<br>
+				<button type="submit" class="submit-button">Submit</button>
+
+				<hr>
+				<h5 style="text-align:center">To create a new account | <a href="/signuppage/"
+						style="text-decoration: underline; color:rgb(0, 255, 0)">click here</a></h5>
+			</form>
+		</div>
+		{% endif %}
+	</div>
+
+	<script>
+		function myFunction() {
+			var x = document.getElementById("bar");
+			if (x.className === "navbar") {
+				x.className += " responsive";
+			} else {
+				x.className = "navbar";
+			}
+		}
+	</script>
+</body>
+
+</html>
